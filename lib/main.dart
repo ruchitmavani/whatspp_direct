@@ -34,7 +34,7 @@ void callbackDispatcher() {
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
+    await Hive.initFlutter();
   Hive.registerAdapter(ContactAdapter());
   await Hive.openBox<Contact>(StringConstants.contacts);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

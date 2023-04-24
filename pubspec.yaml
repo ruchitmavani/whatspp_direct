@@ -51,6 +51,9 @@ dependencies:
   #
   country_code_picker: 2.0.2
   intl_phone_field: ^3.0.1
+  reactive_forms: ^14.2.0
+  reactive_phone_form_field: ^0.12.0
+  flutter_svg: ^2.0.5
 
   #hive database
   hive: ^2.0.5
@@ -58,6 +61,9 @@ dependencies:
 
   #remove this after use
   flutter_native_splash: ^2.0.2
+
+dependency_overrides:
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
