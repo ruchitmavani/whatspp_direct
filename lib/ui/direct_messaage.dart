@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'dart:io' show Platform;
 
 // import 'package:intl_phone_field/phone_number.dart';
 import 'package:provider/provider.dart';
@@ -25,26 +26,29 @@ class DirectMessage extends StatefulWidget {
 }
 
 class _DirectMessageState extends State<DirectMessage> {
-  String countryCode = '+91';
+  // String countryCode = '+91';
 
-  final TextEditingController _phone = TextEditingController();
-
-  final TextEditingController _message = TextEditingController();
-  final TextEditingController _name = TextEditingController();
+  // final TextEditingController _phone = TextEditingController();
+  //
+  // final TextEditingController _message = TextEditingController();
+  // final TextEditingController _name = TextEditingController();
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  String phone = '';
+  String name = '';
 
   @override
   void initState() {
     super.initState();
-    _phone.text = context.read<PhoneProvider>().phone;
-    _name.text = context.read<NameProvider>().name;
+    phone = context.read<PhoneProvider>().phone;
+    name = context.read<NameProvider>().name;
+    print(phone);
   }
 
-  Future saveInDb() async {
+  Future saveInDb(Map<String, dynamic> value, PhoneNumber control) async {
     final contact = Contact(
-        name: _name.text,
-        contactNo: int.parse(_phone.text),
+        name: value['name'],
+        contactNo: int.parse(control.nsn),
         date: DateTime.now());
 
     final box = Boxes.getContacts();
@@ -65,12 +69,12 @@ class _DirectMessageState extends State<DirectMessage> {
     }
   }
 
-  void sendMessage() async {
-    await saveInDb();
-    if (_key.currentState!.validate() && _phone.text.isNotEmpty) {
+  void sendMessage(Map<String, dynamic> value, PhoneNumber control) async {
+    await saveInDb(value, control);
+    if (_key.currentState!.validate() && control.nsn.isNotEmpty) {
       final link = WhatsAppUnilink(
-        phoneNumber: countryCode + _phone.text,
-        text: _message.text,
+        phoneNumber: control.countryCode + control.nsn,
+        text: value['message'],
       );
 
       // Convert the WhatsAppUnilink instance to a string.
@@ -78,13 +82,28 @@ class _DirectMessageState extends State<DirectMessage> {
       // The "launch" method is part of "url_launcher".
       await launch('$link');
     } else {
-      const snackBar = SnackBar(
-        content: Text(
-          'Phone number is empty!',
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // const snackBar = SnackBar(
+      //   content: Text(
+      //     'Phone number is empty!',
+      //   ),
+      // );
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  Map<String, dynamic>? validPhoneNumber(
+    AbstractControl<dynamic> control,
+  ) {
+    if (control.value == null) {
+      return null;
+    }
+    if (control.value! is! PhoneNumber) {
+      return null;
+    }
+    if (!(control.value as PhoneNumber).isValid()) {
+      return <String, bool>{'invalidPhone': true};
+    }
+    return null;
   }
 
   @override
@@ -93,13 +112,16 @@ class _DirectMessageState extends State<DirectMessage> {
         child: Scaffold(
       body: ReactiveFormBuilder(
         form: () => fb.group({
-          'name': FormControl<String>(validators: []),
+          'name': FormControl<String>(validators: [], value: name),
+          'message': FormControl<String>(),
           'phone': FormControl<PhoneNumber>(
-            validators: [Validators.required],
-            value: const PhoneNumber(
-              isoCode: IsoCode.IN,
-              nsn: '',
-            ),
+            validators: [validPhoneNumber,Validators.required],
+            value: phone.contains("+")
+                ? PhoneNumber.parse(phone)
+                : PhoneNumber(
+                    isoCode: IsoCode.IN,
+                    nsn: phone,
+                  ),
           ),
         }),
         builder: (context, formGroup, child) {
@@ -133,20 +155,14 @@ class _DirectMessageState extends State<DirectMessage> {
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
                       ],
-                      isCountrySelectionEnabled: false,
-                      showFlagInInput: true,
                       formControlName: 'phone',
                       defaultCountry: IsoCode.IN,
-                      // validator: (PhoneNumber? string) {
-                      //   Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,}$)';
-                      //   RegExp regExp = RegExp(pattern.toString());
-                      //   if (string == null || string.number.isEmpty) {
-                      //     return 'Please enter mobile number';
-                      //   } else if (!regExp.hasMatch(string.number)) {
-                      //     return 'Please enter valid mobile number';
-                      //   }
-                      //   return null;
-                      // },
+                      validationMessages: {
+                        ValidationMessage.required: (control) =>
+                            'Please enter phone number',
+                        'invalidPhone': (control) =>
+                            'Please  enter valid number'
+                      },
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
@@ -229,15 +245,15 @@ class _DirectMessageState extends State<DirectMessage> {
                       maxHeight: 100.0,
                     ),
                     child: Scrollbar(
-                      child: TextField(
+                      child: ReactiveTextField(
                         keyboardType: TextInputType.multiline,
                         textInputAction: TextInputAction.done,
                         onSubmitted: (value) {
-                          sendMessage();
+                          // sendMessage(formGroup.value);
                         },
                         maxLines: null,
                         // focusNode: focusNode,
-                        controller: _message,
+                        formControlName: 'message',
                         style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -250,23 +266,29 @@ class _DirectMessageState extends State<DirectMessage> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: InkWell(
-                      onTap: sendMessage,
-                      child: Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: green,
-                            borderRadius: BorderRadius.circular(2),
+                  ReactiveValueListenableBuilder<PhoneNumber>(
+                      formControlName: 'phone',
+                      builder: (context, control, child) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: InkWell(
+                            onTap: () => formGroup.valid
+                                ? sendMessage(formGroup.value, control.value!)
+                                : null,
+                            child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: green,
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                                child: const Text(
+                                  "SEND",
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                )),
                           ),
-                          child: const Text(
-                            "SEND",
-                            style: TextStyle(fontWeight: FontWeight.w700),
-                          )),
-                    ),
-                  )
+                        );
+                      })
                 ],
               ),
             ),

@@ -67,9 +67,7 @@ class _CallLogsState extends State<CallLogs> {
                     child: InkWell(
                       onTap: () {
                         print('uuu${entry.number}');
-                        context.read<PhoneProvider>().phone =
-                            entry.number!.cleanNumber();
-
+                        context.read<PhoneProvider>().phone = entry.number!;
                         if (entry.name != null) {
                           context.read<NameProvider>().name = entry.name!;
                         } else {

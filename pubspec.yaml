@@ -53,7 +53,6 @@ dependencies:
   intl_phone_field: ^3.0.1
   reactive_forms: ^14.2.0
   reactive_phone_form_field: ^0.12.0
-  flutter_svg: ^2.0.5
 
   #hive database
   hive: ^2.0.5
