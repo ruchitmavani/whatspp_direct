@@ -139,6 +139,7 @@ class _CallLogsState extends State<CallLogs> {
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,
                                           letterSpacing: 0.5)),
+                                  if(entry.cachedMatchedNumber != null)
                                   Padding(
                                     padding: const EdgeInsets.only(top: 3.0),
                                     child: Text('${entry.cachedMatchedNumber}',
