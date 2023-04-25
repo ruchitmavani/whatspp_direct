@@ -35,7 +35,7 @@ class _DirectMessageState extends State<DirectMessage> {
   Future saveInDb(Map<String, dynamic> value, PhoneNumber phone) async {
     final contact = Contact(
         name: value['name'],
-        contactNo: phone.countryCode + phone.nsn,
+        contactNo: "+${phone.countryCode}${phone.nsn}",
         date: DateTime.now());
 
     final box = Boxes.getContacts();
