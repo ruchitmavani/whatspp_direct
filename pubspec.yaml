@@ -47,10 +47,7 @@ dependencies:
   contacts_service: ^0.6.3
   call_log: ^4.0.0
 
-
   #
-  country_code_picker: 2.0.2
-  intl_phone_field: ^3.0.1
   reactive_forms: ^14.2.0
   reactive_phone_form_field: ^0.12.0
 

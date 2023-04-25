@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:whatspp_direct/Providers/phone_provider.dart';
 import 'package:whatspp_direct/Providers/state_provider.dart';
-import 'package:whatspp_direct/utils/extensions.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../Providers/name_provider.dart';

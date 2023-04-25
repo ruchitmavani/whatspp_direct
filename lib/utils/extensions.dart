@@ -1,5 +1,4 @@
-import 'package:intl_phone_field/countries.dart';
-import 'package:whatspp_direct/utils/coubtries.dart';
+import 'package:whatspp_direct/utils/countries.dart';
 
 extension CleanNumber on String {
   String cleanNumber() {
