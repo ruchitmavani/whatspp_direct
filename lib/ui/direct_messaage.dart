@@ -32,10 +32,10 @@ class _DirectMessageState extends State<DirectMessage> {
     name = context.read<NameProvider>().name;
   }
 
-  Future saveInDb(Map<String, dynamic> value, PhoneNumber control) async {
+  Future saveInDb(Map<String, dynamic> value, PhoneNumber phone) async {
     final contact = Contact(
         name: value['name'],
-        contactNo: int.parse(control.nsn),
+        contactNo: phone.countryCode + phone.nsn,
         date: DateTime.now());
 
     final box = Boxes.getContacts();
@@ -56,11 +56,11 @@ class _DirectMessageState extends State<DirectMessage> {
     }
   }
 
-  void sendMessage(Map<String, dynamic> value, PhoneNumber control) async {
-    await saveInDb(value, control);
-    if (_key.currentState!.validate() && control.nsn.isNotEmpty) {
+  void sendMessage(Map<String, dynamic> value, PhoneNumber phone) async {
+    await saveInDb(value, phone);
+    if (_key.currentState!.validate() && phone.nsn.isNotEmpty) {
       final link = WhatsAppUnilink(
-        phoneNumber: control.countryCode + control.nsn,
+        phoneNumber: phone.countryCode + phone.nsn,
         text: value['message'],
       );
 

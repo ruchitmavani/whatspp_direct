@@ -13,7 +13,7 @@ class Contact extends HiveObject {
   @HiveField(0)
   late String name;
   @HiveField(1)
-  final int contactNo;
+  final String contactNo;
   @HiveField(2)
   final DateTime date;
 

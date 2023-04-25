@@ -18,7 +18,7 @@ class ContactAdapter extends TypeAdapter<Contact> {
     };
     return Contact(
       name: fields[0] as String,
-      contactNo: fields[1] as int,
+      contactNo: fields[1] as String,
       date: fields[2] as DateTime,
     );
   }
