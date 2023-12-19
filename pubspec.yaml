@@ -38,7 +38,9 @@ dependencies:
   ##
   whatsapp_unilink: ^2.0.1+1
   url_launcher: ^6.0.18
-
+  receive_sharing_intent:
+    git:
+      url: https://github.com/dilankayapagit/receive_sharing_intent.git
   ##
   permission_handler: ^10.2.0
   workmanager: ^0.5.1

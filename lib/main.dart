@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:call_log/call_log.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,11 +80,11 @@ class _HomeState extends State<Home> {
   int selectedIndex = 0;
   String number = "";
 
-  static const List<Widget> _pages = <Widget>[
-    DirectMessage(),
+  static final List<Widget> _pages = <Widget>[
+    const DirectMessage(),
     // Contacts(),
-    CallLogs(),
-    RecentTransactions(),
+    if (Platform.isAndroid) const CallLogs(),
+    const RecentTransactions(),
   ];
 
   @override
@@ -104,16 +105,17 @@ class _HomeState extends State<Home> {
             _pages.elementAt(context.watch<StateProvider>().getCurrentIndex()),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.paperplane_fill),
             label: 'Direct Message',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.phone_arrow_down_left),
-            label: 'Call Logs',
-          ),
-          BottomNavigationBarItem(
+          if (Platform.isAndroid)
+            const BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.phone_arrow_down_left),
+              label: 'Call Logs',
+            ),
+          const BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.rectangle_expand_vertical),
             label: 'Recents',
           ),
