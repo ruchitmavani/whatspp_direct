@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289900077759",
+    "project_id": "whatsapp-direct-787a7",
+    "storage_bucket": "whatsapp-direct-787a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289900077759:android:a8f6c46cf8b678b5819c0a",
+        "android_client_info": {
+          "package_name": "com.whatsappDirect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_K_3w-zEtf9vDy4aRd6F-3kS-pyM2-0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

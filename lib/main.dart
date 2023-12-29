@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:call_log/call_log.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,9 @@ import 'package:provider/provider.dart';
 import 'package:whatspp_direct/Providers/phone_provider.dart';
 import 'package:whatspp_direct/Providers/state_provider.dart';
 import 'package:whatspp_direct/constants.dart';
+import 'package:whatspp_direct/firebase_options.dart';
+import 'package:whatspp_direct/helper/remote_config_helper.dart';
+import 'package:whatspp_direct/shared_prefs/shared_prefs.dart';
 import 'package:whatspp_direct/ui/call_logs.dart';
 import 'package:whatspp_direct/ui/direct_messaage.dart';
 import 'package:whatspp_direct/ui/local_contacts.dart';
@@ -35,7 +39,15 @@ void callbackDispatcher() {
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Future.wait([
+    Hive.initFlutter(),
+    sharedPrefs.init(),
+    RemoteConfigHelper.init(),
+  ]);
+
   Hive.registerAdapter(ContactAdapter());
   await Hive.openBox<Contact>(StringConstants.contacts);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -79,7 +91,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
   String number = "";
-
+@override
+  void initState() {
+    super.initState();
+    RemoteConfigHelper.appForceUpdate(context);
+  }
   static final List<Widget> _pages = <Widget>[
     const DirectMessage(),
     // Contacts(),

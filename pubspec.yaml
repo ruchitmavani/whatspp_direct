@@ -37,11 +37,17 @@ dependencies:
 
   ##
   whatsapp_unilink: ^2.0.1+1
+  package_info_plus: ^3.1.2
+  fluttertoast: ^8.2.4
   url_launcher: ^6.0.18
-  receive_sharing_intent:
+  #  receive_sharing_intent:
+  #    git:
+  #      url: https://github.com/dilankayapagit/receive_sharing_intent.git
+  receive_sharing_intent_plus:
     git:
-      url: https://github.com/dilankayapagit/receive_sharing_intent.git
+      url: https://github.com/OutdatedGuy/receive_sharing_intent_plus.git
   ##
+  flutter_process_text: ^1.1.2
   permission_handler: ^10.2.0
   workmanager: ^0.5.1
 
@@ -60,6 +66,14 @@ dependencies:
 
   #remove this after use
   flutter_native_splash: ^2.0.2
+
+  #firebase
+  firebase_core: ^2.24.2
+  firebase_remote_config: ^4.3.8
+
+  #local storage
+  shared_preferences: ^2.2.2
+
 
 dev_dependencies:
   flutter_test:
