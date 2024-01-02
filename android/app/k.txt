@@ -1,0 +1,2 @@
+password: Fibtion@2024
+alias: key0

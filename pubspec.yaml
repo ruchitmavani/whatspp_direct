@@ -55,7 +55,6 @@ dependencies:
   contacts_service: ^0.6.3
   call_log: ^4.0.0
 
-
   #
   country_code_picker: 2.0.2
   intl_phone_field: ^3.0.1
@@ -63,9 +62,6 @@ dependencies:
   #hive database
   hive: ^2.0.5
   hive_flutter: ^1.1.0
-
-  #remove this after use
-  flutter_native_splash: ^2.0.2
 
   #firebase
   firebase_core: ^2.24.2
@@ -87,6 +83,8 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   build_runner: ^2.1.7
   hive_generator: ^2.0.0
+  #remove this after use
+  flutter_native_splash: ^2.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
